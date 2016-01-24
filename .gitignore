@@ -13,3 +13,5 @@ fake-eggs
 local.cfg
 parts
 var
+.DS_Store
+*.mo
