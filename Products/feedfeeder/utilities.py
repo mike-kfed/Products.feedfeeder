@@ -206,6 +206,10 @@ class FeedConsumer:
             summary = convert_summary(summary)
             logger.debug("2 summary: %r" % summary.encode("utf-8"))
 
+            medianame = entry.get('monitoring_medianame')
+            mediatype = entry.get('monitoring_mediatype')
+            logger.debug("medianame/type %s/%s", medianame, mediatype)
+
             obj.update(id=id,
                        title=u"{0}{1}".format(
                            prefix,
@@ -219,6 +223,8 @@ class FeedConsumer:
                        link=link,
                        feedTitle=parsed['feed'].get('title', ''),
                        objectInfo=entry.copy(),
+                       medianame=medianame,
+                       mediatype=mediatype,
                        )
             # Tags cannot be handled by the update method AFAIK,
             # because it is not an Archetypes field.

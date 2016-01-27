@@ -67,6 +67,21 @@ schema = Schema((
             label=_('feedfeeder_label_feedTitle', default='Feed Title'),
         )
     ),
+
+    StringField(
+        name='medianame',
+        widget=StringWidget(
+            label=_('feedfeeder_label_mediaName', default='Medianame'),
+        )
+    ),
+
+    StringField(
+        name='mediatype',
+        widget=StringWidget(
+            label=_('feedfeeder_label_mediaType', default='Mediatype'),
+        )
+    ),
+
     ObjectField(
         name='objectInfo',
         #        read_permission=ManagePortal,

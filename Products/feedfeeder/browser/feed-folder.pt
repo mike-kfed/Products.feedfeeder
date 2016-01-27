@@ -37,10 +37,15 @@
                    2006-11-10
                </td>
                <td>
-                  <a tal:attributes="href child/url"
+                  <a tal:condition="python:child['mediatype'] == 'onlinemedia'"
+                    tal:attributes="href child/target_link"
                      tal:content="structure child/title"> My Title </a>
+                  <b tal:condition="python:child['mediatype'] != 'onlinemedia'"
+                     tal:content="structure child/title"> My Title </b>
                   <div tal:condition="child/summary"
                      tal:content="structure child/summary"> My summary </div>
+                  <div tal:condition="python:child['mediatype'] != 'onlinemedia'"
+                        tal:content="child/medianame"> derStandard </div>
                </td>
             </tr>
          </tbody>

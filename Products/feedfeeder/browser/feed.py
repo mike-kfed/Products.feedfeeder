@@ -90,6 +90,8 @@ class FeedFolderView(object):
                         author=x.getFeedItemAuthor,
                         has_text=x.getHasBody,
                         target_link=x.getLink,
+                        medianame=x.getMedianame,
+                        mediatype=x.getMediatype,
                         )
             self.extraDecoration(item, x)
             enclosures = x.getObjectids

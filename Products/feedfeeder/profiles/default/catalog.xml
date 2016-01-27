@@ -6,4 +6,6 @@
  <column value="getLink"/>
  <column value="getHasBody"/>
  <column value="getObjectids"/>
+ <column value="getMedianame"/>
+ <column value="getMediatype"/>
 </object>

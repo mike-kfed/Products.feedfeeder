@@ -6,6 +6,7 @@
       i18n:domain="feedfeeder">
 
   <body>
+
     <div metal:fill-slot="content-core"
          tal:define="text context/getText;
                      is_editable context/@@plone_context_state/is_editable;">
