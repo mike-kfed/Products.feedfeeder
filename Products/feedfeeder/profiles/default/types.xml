@@ -4,4 +4,6 @@
     name="title">Controls the available content types in your portal</property>
  <object name="FeedFeederItem" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="FeedfeederFolder" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Products.feedfeeder.dexterity_folder" meta_type="Dexterity FTI"/>
+ <object name="Products.feedfeeder.dexterity_item" meta_type="Dexterity FTI"/>
 </object>

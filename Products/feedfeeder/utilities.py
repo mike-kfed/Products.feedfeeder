@@ -7,7 +7,16 @@ import re
 import tempfile
 import urllib2
 
-import feedparser
+# only feedparser 4.1 delivers expected data from feeds
+# therefore it is added as a copy to this addon
+# feedparser version 5.2.1 parses xhtml content differently
+# and mixes up <summary> tags in unittests. here you have the choice which
+# parser you like to use
+USE_BUILTIN_PARSER=False
+if USE_BUILTIN_PARSER:
+    import Products.feedfeeder.feedparser41 as feedparser
+else:
+    import feedparser
 from DateTime import DateTime
 from DateTime.interfaces import SyntaxError as DateTimeSyntaxError
 from zope import component

@@ -101,4 +101,6 @@
         handler="Products.feedfeeder.setuphandlers.update_actions" />
   </genericsetup:upgradeSteps>
 
+  <includeDependencies package="." />
+
 </configure>

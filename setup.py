@@ -33,6 +33,7 @@ setup(name='Products.feedfeeder',
           'setuptools',
           'feedparser',
           'beautifulsoup4',
+          'plone.app.dexterity',
       ],
       extras_require = {
           'test': [
