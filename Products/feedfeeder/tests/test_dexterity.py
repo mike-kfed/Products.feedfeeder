@@ -9,6 +9,7 @@ from plone.app.testing import setRoles
 from plone.dexterity.interfaces import IDexterityFTI
 
 from Products.feedfeeder.content.dexterity_folder import IDexterityFeedfeederFolder
+from Products.feedfeeder.content.dexterity_item import IDexterityFeedfeederItem
 from Products.feedfeeder.testing import INTEGRATION_TESTING
 
 class MockDexterityFeedfeederFolder(object):
@@ -29,6 +30,14 @@ class TestProgramIntegration(unittest.TestCase):
         self.folder.invokeFactory('Products.feedfeeder.dexterity_folder', 'dfeedfold')
         p1 = self.folder['dfeedfold']
         self.assertTrue(IDexterityFeedfeederFolder.providedBy(p1))
+
+    def test_adding_item(self):
+        self.folder.invokeFactory('Products.feedfeeder.dexterity_folder', 'dfeedfold')
+        p1 = self.folder['dfeedfold']
+
+        p1.invokeFactory('Products.feedfeeder.dexterity_item', 'dfeeditem')
+        i1 = p1['dfeeditem']
+        self.assertTrue(IDexterityFeedfeederItem.providedBy(i1))
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
