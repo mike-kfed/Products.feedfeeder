@@ -19,21 +19,12 @@ from zope.interface import invariant, Invalid
 from zope.lifecycleevent import ObjectCreatedEvent
 import datetime
 
-
-class StartBeforeEnd(Invalid):
-    __doc__ = _(u"The start or end date is invalid")
-
+def updatedDefaultValue():
+    return datetime.datetime.today()
 
 class IDexterityFeedfeederItem(model.Schema):
     """A conference program. Programs can contain Sessions.
     """
-    title = schema.TextLine(
-        title=_(u"Feed Item Title"),
-    )
-
-    description = schema.Text(
-        title=_(u"Feed Item description"),
-    )
 
     feed_item_author = schema.TextLine(
         title=_(u"Feed Item Author"),
@@ -43,7 +34,7 @@ class IDexterityFeedfeederItem(model.Schema):
     feed_item_updated = schema.Datetime(
         title=_(u"Feed Item Updated"),
         required=False,
-        default='2000-01-01 00:00:00',
+        defaultFactory=updatedDefaultValue,
     )
 
     text = plone.app.textfield.RichText(

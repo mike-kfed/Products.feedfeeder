@@ -5,15 +5,13 @@
     i18n:translate="">Feedfeeder Dexterity Folder</property>
  <property name="description" i18n:translate="">None</property>
  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
- <property name="factory">feedfeeder_dexterity_folder</property>
- <property
-    name="add_view_expr">string:${folder_url}/++add++feedfeeder_dexterity_folder</property>
+ <property name="factory">Products.feedfeeder.content.dexterity_folder</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
-  <element value="feedfeeder_dexterity_item"/>
+  <element value="Products.feedfeeder.dexterity_item"/>
  </property>
  <property name="allow_discussion">False</property>
  <property name="default_view">view</property>
@@ -22,7 +20,6 @@
  </property>
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>
- <property name="klass">plone.dexterity.content.Container</property>
  <property name="behaviors">
   <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
   <element value="plone.app.content.interfaces.INameFromTitle"/>
@@ -30,6 +27,8 @@
      value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
  </property>
  <property name="schema">Products.feedfeeder.content.dexterity_folder.IDexterityFeedfeederFolder</property>
+ <!--<property name="klass">plone.dexterity.content.Container</property>-->
+ <property name="klass">Products.feedfeeder.content.dexterity_folder.DexterityFeedfeederFolder</property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>
  <alias from="(Default)" to="(dynamic view)"/>

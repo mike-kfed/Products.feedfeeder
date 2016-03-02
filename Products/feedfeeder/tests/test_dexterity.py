@@ -39,6 +39,20 @@ class TestProgramIntegration(unittest.TestCase):
         i1 = p1['dfeeditem']
         self.assertTrue(IDexterityFeedfeederItem.providedBy(i1))
 
+    def test_getting_item_info(self):
+        self.folder.invokeFactory('Products.feedfeeder.dexterity_folder', 'dfeedfold2')
+        p1 = self.folder['dfeedfold2']
+        p1.feeds = "http://deinemama.com"
+        self.assertTrue(len(p1.feeds.split("\n")) == 1)
+        self.assertTrue(len(p1.getFeeds()) == 1)
+        p1.invokeFactory('Products.feedfeeder.dexterity_item', 'dfeeditem')
+        i1 = p1['dfeeditem']
+        self.assertTrue(p1.getItem('dfeeditem') is not None)
+        self.assertTrue(p1.getItem('dfeeditem_nonexist') is None)
+        i1.media_name = 'web'
+        i1.reindexObject()
+        self.assertEqual(i1.media_name, 'web')
+
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
 

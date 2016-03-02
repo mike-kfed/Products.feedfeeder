@@ -4,9 +4,7 @@
  <property name="title" i18n:translate="">Feedfeeder Dexterity Item</property>
  <property name="description" i18n:translate="">None</property>
  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
- <property name="factory">feedfeeder_dexterity_item</property>
- <property
-    name="add_view_expr">string:${folder_url}/++add++feedfeeder_dexterity_item</property>
+ <property name="factory">Products.feedfeeder.content.dexterity_item</property>
  <property name="link_target"></property>
  <property name="immediate_view">view</property>
  <property name="global_allow">True</property>
@@ -19,7 +17,7 @@
  </property>
  <property name="default_view_fallback">False</property>
  <property name="add_permission">cmf.AddPortalContent</property>
- <property name="klass">plone.dexterity.content.Container</property>
+ <property name="klass">plone.dexterity.content.Item</property>
  <property name="behaviors">
   <element value="plone.app.dexterity.behaviors.metadata.IDublinCore"/>
   <element value="plone.app.content.interfaces.INameFromTitle"/>

@@ -10,8 +10,9 @@ import urllib2
 # only feedparser 4.1 delivers expected data from feeds
 # therefore it is added as a copy to this addon
 # feedparser version 5.2.1 parses xhtml content differently
-# and mixes up <summary> tags in unittests. here you have the choice which
-# parser you like to use
+# and mixes up <summary> tags in unittests. However meta information is correctly
+# parsed by 5.2.x which is needed for medianame for example
+# here you have the choice which parser you like to use
 USE_BUILTIN_PARSER=False
 if USE_BUILTIN_PARSER:
     import Products.feedfeeder.feedparser41 as feedparser
@@ -19,6 +20,7 @@ else:
     import feedparser
 from DateTime import DateTime
 from DateTime.interfaces import SyntaxError as DateTimeSyntaxError
+from pytz import timezone
 from zope import component
 from zope import event
 from zope import interface
@@ -31,6 +33,9 @@ from Products.feedfeeder.interfaces.consumer import IFeedConsumer
 from Products.feedfeeder.extendeddatetime import extendedDateTime
 from Products.CMFCore.utils import getToolByName
 from Products.feedfeeder.config import MAXSIZE
+
+from Products.feedfeeder.content.dexterity_folder import IDexterityFeedfeederFolder
+from Products.feedfeeder.content.dexterity_item import IDexterityFeedfeederItem
 
 RE_FILENAME = re.compile('filename *= *(.*)')
 logger = logging.getLogger("feedfeeder")
@@ -62,13 +67,16 @@ def convert_summary(input):
 
 
 def update_text(obj, text, mimetype=None):
-    field = obj.getField('text')
-    if mimetype in field.getAllowedContentTypes(obj):
-        obj.setText(text, mimetype=mimetype)
-        obj.reindexObject()
+    if IDexterityFeedfeederItem.providedBy(obj):
+        obj.text = text
     else:
-        # update does a reindexObject automatically
-        obj.update(text=text)
+        field = obj.getField('text')
+        if mimetype in field.getAllowedContentTypes(obj):
+            obj.setText(text, mimetype=mimetype)
+            obj.reindexObject()
+        else:
+            # update does a reindexObject automatically
+            obj.update(text=text)
 
 
 def get_uid_from_entry(entry):
@@ -100,9 +108,13 @@ class FeedConsumer:
     interface.implements(IFeedConsumer)
 
     def retrieveFeedItems(self, container):
-        feedContainer = IFeedsContainer(container)
-        for url in feedContainer.getFeeds():
-            self._retrieveSingleFeed(feedContainer, url)
+        if IDexterityFeedfeederFolder.providedBy(container):
+            for url in container.getFeeds():
+                self._retrieveSingleFeed(container, url)
+        else:
+            feedContainer = IFeedsContainer(container)
+            for url in feedContainer.getFeeds():
+                self._retrieveSingleFeed(feedContainer, url)
 
     def tryRenamingEnclosure(self, enclosure, feeditem):
         newId = enclosure.Title()
@@ -219,7 +231,24 @@ class FeedConsumer:
             mediatype = entry.get('monitoring_mediatype')
             logger.debug("medianame/type %s/%s", medianame, mediatype)
 
-            obj.update(id=id,
+            if hasattr(obj, 'media_name'):
+                obj.id = id # TODO: useful/dangerous??
+                obj.title = u"{0}{1}".format(
+                           prefix,
+                           getattr(
+                               entry,
+                               'title',
+                               ''))
+                obj.description = summary
+                obj.feed_item_author = getattr(entry, 'author', '')
+                obj.feed_item_updated = updated.asdatetime().astimezone(timezone('Europe/Vienna'))
+                obj.link = link
+                obj.feed_title = parsed['feed'].get('title', '')
+                obj.media_name = medianame
+                obj.media_type = mediatype
+                obj.reindexObject()
+            else:
+                obj.update(id=id,
                        title=u"{0}{1}".format(
                            prefix,
                            getattr(
