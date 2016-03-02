@@ -4,19 +4,15 @@ readme = open("README.rst").read().strip()
 history = open("CHANGES.rst").read().strip()
 
 setup(name='Products.feedfeeder',
-      version='2.8',
-      description="Turn external feed entries into content items",
+      version='3.0',
+      description="Turn external feed entries into Dexterity content items",
       long_description= readme + "\n\n" + history,
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
           "Framework :: Plone",
-          "Framework :: Plone :: 4.0",
-          "Framework :: Plone :: 4.1",
-          "Framework :: Plone :: 4.2",
           "Framework :: Plone :: 4.3",
           "Programming Language :: Python",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           "Topic :: Software Development :: Libraries :: Python Modules",
           ],
