@@ -17,6 +17,11 @@ from zope.event import notify
 from zope.filerepresentation.interfaces import IFileFactory
 from zope.interface import invariant, Invalid
 from zope.lifecycleevent import ObjectCreatedEvent
+
+from zope import interface
+from plone.dexterity import content
+
+
 import datetime
 
 def updatedDefaultValue():
@@ -62,9 +67,42 @@ class IDexterityFeedfeederItem(model.Schema):
         required=False,
     )
 
+class DexterityFeedfeederItem(content.Item):
+
+    interface.implements(IDexterityFeedfeederItem)
+
+    #def getURL(self):
+    #    return self.link
+
+    def getFeedTitle(self):
+        return self.title
+    def getFeedItemAuthor(self):
+        return self.feed_item_author
+    def getFeedItemUpdated(self):
+        return self.feed_item_updated
+    def getLink(self):
+        return self.link
+    def getHasBody(self):
+        return len(self.text) > 0
+    def getObjectids(self):
+        return []
+    def getMedianame(self):
+        return self.media_name
+    def getMediatype(self):
+        return self.media_type
+
+    @property
+    def getObjectInfo(self):
+        """hack, apparently objectInfo is a hidden field in the archetype implementation"""
+        return None
+
+    def setObjectInfo(self, value):
+        """original implementation stores the feed data returned from feedparser"""
+        return None
+
 # Views
 
-class View(grok.View):
+class DexterityFeedfeederItemView(grok.View):
     grok.context(IDexterityFeedfeederItem)
     grok.require('zope2.View')
 

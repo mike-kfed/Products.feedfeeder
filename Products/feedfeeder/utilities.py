@@ -179,7 +179,7 @@ class FeedConsumer:
                             "Not updating previously added entry: {0}".format(
                                 getattr(entry, 'title', '').encode("utf-8")))
                 continue
-            elif updated > prev.getFeedItemUpdated():
+            elif updated.asdatetime() > prev.getFeedItemUpdated():
                 # Refreshed item, replace it.
                 addItem = feedContainer.replaceItem
             else:

@@ -10,12 +10,27 @@
       />
 
   <page
+      name="update_dfeed_items"
+      class=".feed.UpdateFeedItems"
+      for="Products.feedfeeder.content.dexterity_folder.IDexterityFeedfeederFolder"
+      permission="feedfeeder.UpdateFeed"
+      />
+
+  <page
       name="is_feedcontainer"
       class=".feed.IsFeedContainer"
       for="*"
       attribute="is_feedcontainer"
       permission="zope2.View"
       />
+
+  <page
+        name="myview"
+        for="Products.feedfeeder.content.dexterity_folder.IDexterityFeedfeederFolder"
+        class="Products.feedfeeder.content.dexterity_folder.DexterityFeedfeederFolderView"
+        template="dexterity-feed-folder.pt"
+        permission="zope2.View"
+        />
 
   <page
       name="feed-folder.html"

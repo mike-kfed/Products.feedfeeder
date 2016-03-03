@@ -2,7 +2,7 @@ from Acquisition import aq_inner
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.feedfeeder import _
-#from example.conference.session import ISession
+from Products.feedfeeder.content.dexterity_item import IDexterityFeedfeederItem
 from five import grok
 from plone.app.textfield import RichText
 #from plone.directives import form
@@ -18,6 +18,7 @@ from zope.interface import invariant, Invalid
 from zope.lifecycleevent import ObjectCreatedEvent
 
 from zope import interface
+from plone.dexterity import content
 from Products.feedfeeder.interfaces.container import IFeedsContainer
 
 
@@ -51,18 +52,12 @@ class IDexterityFeedfeederFolder(model.Schema):
         """returns a list of feeds"""
 
 
-from OFS.Traversable import Traversable
-from persistent import Persistent
-from Acquisition import Explicit
-from plone.dexterity import content
-
 class DexterityFeedfeederFolder(content.Container):
 
     interface.implements(IDexterityFeedfeederFolder)
 
-    def __init__(self, id=None):
-        super(content.Container, self).__init__(id=id)
-        #self.id = id
+    #def __init__(self, id=None):
+    #    super(content.Container, self).__init__(id=id)
 
     def getFeeds(self):
         return self.feeds.split("\n")
@@ -100,17 +95,28 @@ class DexterityFeedfeederFolder(content.Container):
 
 # Views
 
-class View(grok.View):
-    grok.context(IDexterityFeedfeederFolder)
-    grok.require('zope2.View')
 
-    def sessions(self):
-        """Return a catalog search result of sessions to show
+#class DexterityFeedfeederFolderView(grok.View):
+#    grok.context(IDexterityFeedfeederFolder)
+#    grok.require('zope2.View')
+#from Products.Five import BrowserView
+#class DexterityFeedfeederFolderView(BrowserView):
+
+from plone.dexterity.browser.view import DefaultView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+import os
+class DexterityFeedfeederFolderView(DefaultView):
+    # Just point to the original template from plone.dexterity.
+    index = ViewPageTemplateFile(
+        'dexterity-feed-folder.pt', "%s/../browser" % os.path.dirname(__file__))
+
+    def items(self):
+        """Return a catalog search result of Items to show
         """
 
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
 
-        return catalog(object_provides=ISession.__identifier__,
+        return catalog(object_provides=IDexterityFeedfeederItem.__identifier__,
                        path='/'.join(context.getPhysicalPath()),
-                       sort_order='sortable_title')
+                       sort_order='feed_item_updated')

@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="example.conference">
+
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+
+        <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+        <h1 class="documentFirstHeading" tal:content="context/title" />
+
+
+
+
+        <div tal:replace="structure provider:plone.belowcontenttitle" />
+
+        <p class="documentDescription" tal:content="context/description" />
+
+
+        <div tal:replace="structure provider:plone.abovecontentbody" />
+
+        <table cellpadding="0"
+                     class="FeedListing"
+                     tal:define="results view/item_list;
+                                 Batch python:modules['Products.CMFPlone'].Batch;
+                                 b_size request/b_size|python:20;b_start python:0;b_start request/b_start | b_start;
+                                 batch python:Batch(results, b_size, int(b_start), orphan=1);
+                                 toLocalizedTime nocall:context/@@plone/toLocalizedTime;">
+           <tbody valign="top">
+              <tr tal:repeat="child view/items">
+                <td tal:content="python:toLocalizedTime(child.getFeedItemUpdated, long_format=0)"
+                   class="feed-date">
+                    2006-11-10
+                </td>
+                <td>
+                   <a tal:condition="python:child.getMediatype == 'onlinemedia'"
+                     tal:attributes="href child/getLink"
+                      tal:content="structure child/Title"> My Title </a>
+                   <b tal:condition="python:child.getMediatype != 'onlinemedia'"
+                      tal:content="structure child/Title"> My Title </b>
+                   <div tal:condition="child/Description"
+                      tal:content="structure child/Description"> My summary </div>
+                   <div tal:condition="python:child.getMediatype != 'onlinemedia'"
+                         tal:content="child/getMedianame"> derStandard </div>
+                </td>
+              </tr>
+           </tbody>
+        </table>
+
+        <div tal:replace="structure provider:plone.belowcontentbody" />
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
