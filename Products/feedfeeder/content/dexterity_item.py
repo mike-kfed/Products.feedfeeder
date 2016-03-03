@@ -83,7 +83,7 @@ class DexterityFeedfeederItem(content.Item):
     def getLink(self):
         return self.link
     def getHasBody(self):
-        return len(self.text) > 0
+        return self.text and len(self.text) > 0
     def getObjectids(self):
         return []
     def getMedianame(self):
